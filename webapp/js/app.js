@@ -7,7 +7,6 @@ let placesById = new Map();
 let selectedCategories = new Set(['biergarten', 'kneipe', 'restaurant', 'tankstelle', 'sonstiges']);
 let onlyOpenNow = false;
 let center = FALLBACK_CENTER;
-let loadDebounceTimer = null;
 
 const $loading = document.getElementById('loadingOverlay');
 const $error = document.getElementById('errorBanner');
@@ -142,11 +141,6 @@ async function loadPlacesForCurrentView() {
   }
 }
 
-function scheduleLoadPlacesForCurrentView() {
-  if (loadDebounceTimer) clearTimeout(loadDebounceTimer);
-  loadDebounceTimer = setTimeout(loadPlacesForCurrentView, 600);
-}
-
 function setupFilters() {
   document.querySelectorAll('#categoryFilters .chip').forEach((chip) => {
     chip.addEventListener('click', () => {
@@ -192,8 +186,6 @@ async function main() {
   setLoading(true);
   await locateUser();
   await loadPlacesForCurrentView();
-
-  map.on('moveend', scheduleLoadPlacesForCurrentView);
 }
 
 main();
