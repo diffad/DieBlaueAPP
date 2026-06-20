@@ -36,7 +36,7 @@ function initMap() {
   }).addTo(map);
 
   userMarker = L.marker(center, {
-    icon: L.divIcon({ className: 'marker-emoji', html: '📍', iconSize: [30, 30] }),
+    icon: L.divIcon({ className: 'marker-emoji user-marker', html: '📍', iconSize: [30, 30] }),
   }).addTo(map);
 }
 
@@ -96,7 +96,7 @@ function showDetails(place) {
   const info = statusInfo(status, place.openingHoursRaw);
 
   $sheetContent.innerHTML = `
-    <div class="detail-title"><span>${place.emoji}</span><span>${escapeHtml(place.name)}</span></div>
+    <div class="detail-title"><span class="beer-emoji">${place.emoji}</span><span>${escapeHtml(place.name)}</span></div>
     <div class="detail-category">${place.label}</div>
     ${place.address ? `<div class="detail-row">📍 ${escapeHtml(place.address)}</div>` : ''}
     <div class="detail-row ${info.cls}">${info.icon} ${info.label}</div>

@@ -122,6 +122,11 @@ main#map {
   line-height: 1;
 }
 
+.beer-emoji,
+.marker-emoji:not(.user-marker) {
+  filter: hue-rotate(170deg) saturate(2.2) brightness(1.05);
+}
+
 .loading-overlay {
   position: fixed;
   inset: 0;
