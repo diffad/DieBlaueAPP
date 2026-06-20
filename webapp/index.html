@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>DieBlaueAPP – Bierkarte</title>
+  <meta name="theme-color" content="#0B1F3A" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/logo.jpg" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="app-header">
+    <img src="icons/logo.jpg" alt="Logo" class="logo" />
+    <h1>DieBlaueAPP</h1>
+    <div class="header-actions">
+      <button id="toggleOpenNow" title="Nur jetzt geöffnete Orte anzeigen">⏰</button>
+      <button id="refreshBtn" title="Aktualisieren">⟳</button>
+    </div>
+  </header>
+
+  <nav class="category-filters" id="categoryFilters">
+    <button class="chip active" data-category="biergarten">🍺🌳 Biergarten</button>
+    <button class="chip active" data-category="kneipe">🍻 Kneipe/Bar</button>
+    <button class="chip active" data-category="restaurant">🍺🍽 Restaurant</button>
+    <button class="chip active" data-category="tankstelle">🍺⛽ Tankstelle</button>
+    <button class="chip active" data-category="sonstiges">🍺 Sonstiges</button>
+  </nav>
+
+  <div id="errorBanner" class="error-banner hidden"></div>
+
+  <main id="map"></main>
+
+  <div id="loadingOverlay" class="loading-overlay hidden">
+    <div class="spinner"></div>
+  </div>
+
+  <div id="detailsSheet" class="details-sheet hidden">
+    <div class="sheet-handle"></div>
+    <div id="detailsContent"></div>
+  </div>
+  <div id="sheetBackdrop" class="sheet-backdrop hidden"></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/openingHours.js"></script>
+  <script src="js/overpassService.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

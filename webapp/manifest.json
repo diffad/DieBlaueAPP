@@ -1,0 +1,22 @@
+{
+  "name": "DieBlaueAPP – Bierkarte",
+  "short_name": "DieBlaueAPP",
+  "description": "Finde Biergärten, Kneipen, Restaurants und Tankstellen mit Bier in deiner Umgebung.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0B1F3A",
+  "theme_color": "#0B1F3A",
+  "icons": [
+    {
+      "src": "icons/logo.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "icons/logo.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}

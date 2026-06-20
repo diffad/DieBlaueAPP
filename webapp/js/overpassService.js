@@ -1,0 +1,92 @@
+// Lädt Biergärten, Kneipen/Bars, Restaurants und Tankstellen im Umkreis
+// eines Punktes über die kostenlose Overpass-API (OpenStreetMap-Daten).
+
+const OVERPASS_ENDPOINT = 'https://overpass-api.de/api/interpreter';
+
+function categoryFromTags(tags) {
+  const amenity = tags.amenity;
+  if (amenity === 'biergarten') return 'biergarten';
+  if (amenity === 'bar' || amenity === 'pub') return 'kneipe';
+  if (amenity === 'restaurant' || amenity === 'fast_food') return 'restaurant';
+  if (amenity === 'fuel') return 'tankstelle';
+  return 'sonstiges';
+}
+
+const CATEGORY_EMOJI = {
+  biergarten: '🍺🌳',
+  kneipe: '🍻',
+  restaurant: '🍺🍽',
+  tankstelle: '🍺⛽',
+  sonstiges: '🍺',
+};
+
+const CATEGORY_LABEL = {
+  biergarten: 'Biergarten',
+  kneipe: 'Kneipe / Bar',
+  restaurant: 'Restaurant',
+  tankstelle: 'Tankstelle',
+  sonstiges: 'Sonstiges',
+};
+
+function elementToPlace(element) {
+  const tags = element.tags || {};
+  let lat, lon;
+  if (element.type === 'node') {
+    lat = element.lat;
+    lon = element.lon;
+  } else {
+    lat = element.center.lat;
+    lon = element.center.lon;
+  }
+  const street = tags['addr:street'];
+  const houseNumber = tags['addr:housenumber'];
+  const city = tags['addr:city'];
+  const addressParts = [];
+  if (street) addressParts.push(houseNumber ? `${street} ${houseNumber}` : street);
+  if (city) addressParts.push(city);
+
+  const category = categoryFromTags(tags);
+  return {
+    id: `${element.type}/${element.id}`,
+    name: tags.name || 'Unbenannt',
+    category,
+    emoji: CATEGORY_EMOJI[category],
+    label: CATEGORY_LABEL[category],
+    lat,
+    lon,
+    openingHoursRaw: tags.opening_hours || null,
+    address: addressParts.length ? addressParts.join(', ') : null,
+  };
+}
+
+async function fetchNearbyPlaces(lat, lon, radiusMeters = 3000) {
+  const query = `
+    [out:json][timeout:25];
+    (
+      node["amenity"="biergarten"](around:${radiusMeters},${lat},${lon});
+      node["amenity"="bar"](around:${radiusMeters},${lat},${lon});
+      node["amenity"="pub"](around:${radiusMeters},${lat},${lon});
+      node["amenity"="restaurant"](around:${radiusMeters},${lat},${lon});
+      node["amenity"="fuel"](around:${radiusMeters},${lat},${lon});
+      way["amenity"="biergarten"](around:${radiusMeters},${lat},${lon});
+      way["amenity"="bar"](around:${radiusMeters},${lat},${lon});
+      way["amenity"="pub"](around:${radiusMeters},${lat},${lon});
+      way["amenity"="restaurant"](around:${radiusMeters},${lat},${lon});
+      way["amenity"="fuel"](around:${radiusMeters},${lat},${lon});
+    );
+    out center tags;
+  `;
+
+  const response = await fetch(OVERPASS_ENDPOINT, {
+    method: 'POST',
+    body: `data=${encodeURIComponent(query)}`,
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Overpass-Anfrage fehlgeschlagen: ${response.status}`);
+  }
+
+  const data = await response.json();
+  return data.elements.map(elementToPlace);
+}
