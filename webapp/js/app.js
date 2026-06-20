@@ -3,10 +3,11 @@ const FALLBACK_CENTER = [52.5200, 13.4050]; // Berlin
 let map;
 let userMarker;
 let placeMarkers = [];
-let allPlaces = [];
+let placesById = new Map();
 let selectedCategories = new Set(['biergarten', 'kneipe', 'restaurant', 'tankstelle', 'sonstiges']);
 let onlyOpenNow = false;
 let center = FALLBACK_CENTER;
+let loadDebounceTimer = null;
 
 const $loading = document.getElementById('loadingOverlay');
 const $error = document.getElementById('errorBanner');
@@ -63,7 +64,7 @@ function renderMarkers() {
   placeMarkers.forEach((m) => map.removeLayer(m));
   placeMarkers = [];
 
-  const filtered = allPlaces.filter((place) => {
+  const filtered = Array.from(placesById.values()).filter((place) => {
     if (!selectedCategories.has(place.category)) return false;
     if (onlyOpenNow && currentOpenStatus(place.openingHoursRaw, new Date()) !== 'open') {
       return false;
@@ -117,17 +118,33 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
-async function loadPlaces() {
+// Lädt Orte für den aktuell sichtbaren Kartenausschnitt (mit etwas Rand)
+// und fügt sie zum bestehenden Bestand hinzu, statt ihn zu ersetzen –
+// so bleiben bereits geladene Bereiche beim Weiterzoomen/-scrollen erhalten.
+async function loadPlacesForCurrentView() {
   setLoading(true);
   showError(null);
   try {
-    allPlaces = await fetchNearbyPlaces(center[0], center[1]);
+    const bounds = map.getBounds().pad(0.2);
+    const bbox = {
+      south: bounds.getSouth(),
+      west: bounds.getWest(),
+      north: bounds.getNorth(),
+      east: bounds.getEast(),
+    };
+    const places = await fetchPlacesInBounds(bbox);
+    places.forEach((place) => placesById.set(place.id, place));
     renderMarkers();
   } catch (e) {
     showError(`Orte konnten nicht geladen werden: ${e.message}`);
   } finally {
     setLoading(false);
   }
+}
+
+function scheduleLoadPlacesForCurrentView() {
+  if (loadDebounceTimer) clearTimeout(loadDebounceTimer);
+  loadDebounceTimer = setTimeout(loadPlacesForCurrentView, 600);
 }
 
 function setupFilters() {
@@ -152,7 +169,7 @@ function setupHeaderActions() {
     $toggleOpenNow.classList.toggle('active', onlyOpenNow);
     renderMarkers();
   });
-  document.getElementById('refreshBtn').addEventListener('click', loadPlaces);
+  document.getElementById('refreshBtn').addEventListener('click', loadPlacesForCurrentView);
   $sheetBackdrop.addEventListener('click', hideDetails);
 }
 
@@ -162,7 +179,9 @@ async function main() {
   setupHeaderActions();
   setLoading(true);
   await locateUser();
-  await loadPlaces();
+  await loadPlacesForCurrentView();
+
+  map.on('moveend', scheduleLoadPlacesForCurrentView);
 
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js').catch(() => {});

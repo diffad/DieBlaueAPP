@@ -59,20 +59,22 @@ function elementToPlace(element) {
   };
 }
 
-async function fetchNearbyPlaces(lat, lon, radiusMeters = 3000) {
+// bbox: { south, west, north, east } – z.B. aus Leaflet map.getBounds()
+async function fetchPlacesInBounds(bbox) {
+  const bboxStr = `${bbox.south},${bbox.west},${bbox.north},${bbox.east}`;
   const query = `
     [out:json][timeout:25];
     (
-      node["amenity"="biergarten"](around:${radiusMeters},${lat},${lon});
-      node["amenity"="bar"](around:${radiusMeters},${lat},${lon});
-      node["amenity"="pub"](around:${radiusMeters},${lat},${lon});
-      node["amenity"="restaurant"](around:${radiusMeters},${lat},${lon});
-      node["amenity"="fuel"](around:${radiusMeters},${lat},${lon});
-      way["amenity"="biergarten"](around:${radiusMeters},${lat},${lon});
-      way["amenity"="bar"](around:${radiusMeters},${lat},${lon});
-      way["amenity"="pub"](around:${radiusMeters},${lat},${lon});
-      way["amenity"="restaurant"](around:${radiusMeters},${lat},${lon});
-      way["amenity"="fuel"](around:${radiusMeters},${lat},${lon});
+      node["amenity"="biergarten"](${bboxStr});
+      node["amenity"="bar"](${bboxStr});
+      node["amenity"="pub"](${bboxStr});
+      node["amenity"="restaurant"](${bboxStr});
+      node["amenity"="fuel"](${bboxStr});
+      way["amenity"="biergarten"](${bboxStr});
+      way["amenity"="bar"](${bboxStr});
+      way["amenity"="pub"](${bboxStr});
+      way["amenity"="restaurant"](${bboxStr});
+      way["amenity"="fuel"](${bboxStr});
     );
     out center tags;
   `;
