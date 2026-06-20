@@ -173,7 +173,19 @@ function setupHeaderActions() {
   $sheetBackdrop.addEventListener('click', hideDetails);
 }
 
+function unregisterServiceWorkers() {
+  if (!('serviceWorker' in navigator)) return;
+  navigator.serviceWorker.getRegistrations().then((registrations) => {
+    registrations.forEach((reg) => reg.unregister());
+  });
+  if (window.caches) {
+    caches.keys().then((keys) => keys.forEach((key) => caches.delete(key)));
+  }
+}
+
 async function main() {
+  document.getElementById('appVersion').textContent = `v${APP_VERSION}`;
+  unregisterServiceWorkers();
   initMap();
   setupFilters();
   setupHeaderActions();
@@ -182,16 +194,6 @@ async function main() {
   await loadPlacesForCurrentView();
 
   map.on('moveend', scheduleLoadPlacesForCurrentView);
-
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js').catch(() => {});
-    let reloaded = false;
-    navigator.serviceWorker.addEventListener('controllerchange', () => {
-      if (reloaded) return;
-      reloaded = true;
-      window.location.reload();
-    });
-  }
 }
 
 main();
