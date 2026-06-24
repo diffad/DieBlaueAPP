@@ -45,6 +45,7 @@ body {
   height: 32px;
   border-radius: 6px;
   object-fit: cover;
+  cursor: pointer;
 }
 
 .app-header h1 {

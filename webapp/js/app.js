@@ -216,19 +216,14 @@ async function reloadIfNewVersionAvailable() {
   return false;
 }
 
-async function handleRefresh() {
-  const reloading = await reloadIfNewVersionAvailable();
-  if (reloading) return;
-  await loadPlacesForCurrentView();
-}
-
 function setupHeaderActions() {
   $toggleOpenNow.addEventListener('click', () => {
     onlyOpenNow = !onlyOpenNow;
     $toggleOpenNow.classList.toggle('active', onlyOpenNow);
     renderMarkers();
   });
-  document.getElementById('refreshBtn').addEventListener('click', handleRefresh);
+  document.getElementById('refreshBtn').addEventListener('click', loadPlacesForCurrentView);
+  document.getElementById('appLogo').addEventListener('click', reloadIfNewVersionAvailable);
   $sheetBackdrop.addEventListener('click', hideDetails);
 }
 
