@@ -113,15 +113,29 @@ function renderMarkers() {
 
   filtered.forEach((place, index) => {
     const marker = L.marker([place.lat, place.lon], {
-      icon: L.divIcon({ className: 'marker-emoji marker-pop-in', html: `<span class="beer-emoji">${place.emoji}</span>`, iconSize: [32, 32] }),
+      icon: L.divIcon({ className: 'marker-emoji marker-fly-in', html: `<span class="beer-emoji">${place.emoji}</span>`, iconSize: [32, 32] }),
     });
     marker.on('click', () => showDetails(place));
     placeMarkers.push(marker);
 
+    const angle = Math.random() * Math.PI * 2;
+    const distance = 70 + Math.random() * 90;
+    const startX = Math.cos(angle) * distance;
+    const startY = Math.sin(angle) * distance;
+    const curveSign = Math.random() < 0.5 ? -1 : 1;
+    const midX = Math.cos(angle) * distance * 0.5 - Math.sin(angle) * distance * 0.4 * curveSign;
+    const midY = Math.sin(angle) * distance * 0.5 + Math.cos(angle) * distance * 0.4 * curveSign;
+
     const timer = setTimeout(() => {
       marker.addTo(map);
       const el = marker.getElement();
-      if (el) requestAnimationFrame(() => el.classList.add('marker-pop-in-visible'));
+      if (el) {
+        el.style.setProperty('--fly-start-x', `${startX}px`);
+        el.style.setProperty('--fly-start-y', `${startY}px`);
+        el.style.setProperty('--fly-mid-x', `${midX}px`);
+        el.style.setProperty('--fly-mid-y', `${midY}px`);
+        requestAnimationFrame(() => el.classList.add('marker-fly-in-visible'));
+      }
     }, index * 40);
     popInTimers.push(timer);
   });
