@@ -33,11 +33,6 @@ body {
   border-bottom: 1px solid var(--medium-blue);
 }
 
-.app-header h1 {
-  font-size: 18px;
-  margin: 0;
-}
-
 .app-version {
   font-size: 11px;
   font-weight: normal;
@@ -56,6 +51,9 @@ body {
   font-size: 18px;
   margin: 0;
   flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .header-actions button {
@@ -74,6 +72,16 @@ body {
   background: var(--beer-gold);
   color: var(--dark-blue);
 }
+
+.nearest-info {
+  padding: 6px 14px;
+  font-size: 13px;
+  color: var(--beer-gold);
+  background: var(--dark-blue);
+  border-bottom: 1px solid var(--medium-blue);
+}
+
+.nearest-info.hidden { display: none; }
 
 .category-filters {
   display: flex;

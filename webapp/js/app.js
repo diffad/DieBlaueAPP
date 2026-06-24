@@ -14,6 +14,45 @@ const $sheet = document.getElementById('detailsSheet');
 const $sheetContent = document.getElementById('detailsContent');
 const $sheetBackdrop = document.getElementById('sheetBackdrop');
 const $toggleOpenNow = document.getElementById('toggleOpenNow');
+const $nearestInfo = document.getElementById('nearestInfo');
+
+function distanceMeters(lat1, lon1, lat2, lon2) {
+  const R = 6371000;
+  const toRad = (deg) => (deg * Math.PI) / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+function formatDistance(meters) {
+  if (meters >= 1000) return `${(meters / 1000).toFixed(1)} km`;
+  return `${Math.round(meters)} m`;
+}
+
+function updateNearestInfo(places) {
+  if (!places.length) {
+    $nearestInfo.classList.add('hidden');
+    return;
+  }
+  let nearest = null;
+  let nearestDistance = Infinity;
+  places.forEach((place) => {
+    const d = distanceMeters(center[0], center[1], place.lat, place.lon);
+    if (d < nearestDistance) {
+      nearestDistance = d;
+      nearest = place;
+    }
+  });
+  if (!nearest) {
+    $nearestInfo.classList.add('hidden');
+    return;
+  }
+  $nearestInfo.textContent = `🍺 Nächstes Bier: ${nearest.name} – ${formatDistance(nearestDistance)} entfernt`;
+  $nearestInfo.classList.remove('hidden');
+}
 
 function setLoading(isLoading) {
   $loading.classList.toggle('hidden', !isLoading);
@@ -79,6 +118,8 @@ function renderMarkers() {
     marker.addTo(map);
     placeMarkers.push(marker);
   });
+
+  updateNearestInfo(filtered);
 }
 
 function statusInfo(status, raw) {
