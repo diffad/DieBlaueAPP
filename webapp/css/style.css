@@ -132,7 +132,7 @@ main#map {
 }
 
 .marker-emoji {
-  font-size: 22px;
+  font-size: 26px;
   text-align: center;
   line-height: 1;
 }
@@ -141,12 +141,16 @@ main#map {
   display: inline-block;
   transform: scale(0);
   opacity: 0;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease-out;
 }
 
 .marker-pop-in.marker-pop-in-visible {
-  transform: scale(1);
-  opacity: 1;
+  animation: marker-pop-overshoot 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes marker-pop-overshoot {
+  0% { transform: scale(0); opacity: 0; }
+  60% { transform: scale(1.5); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 .user-marker {
@@ -162,16 +166,18 @@ main#map {
 }
 
 .beer-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: var(--beer-gold);
-  border: 1.5px solid #000;
-  font-size: 14px;
+  display: inline-block;
+  font-size: 26px;
   line-height: 1;
+  text-shadow:
+    -1.5px -1.5px 0 #000,
+    1.5px -1.5px 0 #000,
+    -1.5px 1.5px 0 #000,
+    1.5px 1.5px 0 #000,
+    0 -1.5px 0 #000,
+    0 1.5px 0 #000,
+    -1.5px 0 0 #000,
+    1.5px 0 0 #000;
 }
 
 .loading-overlay {
