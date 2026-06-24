@@ -38,20 +38,18 @@ function updateNearestInfo(places) {
     $nearestInfo.classList.add('hidden');
     return;
   }
-  let nearest = null;
-  let nearestDistance = Infinity;
-  places.forEach((place) => {
-    const d = distanceMeters(center[0], center[1], place.lat, place.lon);
-    if (d < nearestDistance) {
-      nearestDistance = d;
-      nearest = place;
-    }
-  });
-  if (!nearest) {
+  const nearest = places
+    .map((place) => ({ place, distance: distanceMeters(center[0], center[1], place.lat, place.lon) }))
+    .sort((a, b) => a.distance - b.distance)
+    .slice(0, 3);
+  if (!nearest.length) {
     $nearestInfo.classList.add('hidden');
     return;
   }
-  $nearestInfo.textContent = `🍺 Nächstes Bier: ${nearest.name} – ${formatDistance(nearestDistance)} entfernt`;
+  const labels = ['Nächstes Bier', '2. nächstes Bier', '3. nächstes Bier'];
+  $nearestInfo.innerHTML = nearest
+    .map(({ place, distance }, i) => `<div>🍺 ${labels[i]}: ${escapeHtml(place.name)} – ${formatDistance(distance)} entfernt</div>`)
+    .join('');
   $nearestInfo.classList.remove('hidden');
 }
 
