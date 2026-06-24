@@ -125,14 +125,14 @@ main#map {
 .beer-emoji,
 .user-marker {
   text-shadow:
-    -1px -1px 0 #fff,
-    1px -1px 0 #fff,
-    -1px 1px 0 #fff,
-    1px 1px 0 #fff,
-    0 -1px 0 #fff,
-    0 1px 0 #fff,
-    -1px 0 0 #fff,
-    1px 0 0 #fff;
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000,
+    0 -1px 0 #000,
+    0 1px 0 #000,
+    -1px 0 0 #000,
+    1px 0 0 #000;
 }
 
 .beer-emoji {
