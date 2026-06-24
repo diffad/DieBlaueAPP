@@ -111,6 +111,9 @@ function renderMarkers() {
     return true;
   });
 
+  const totalDuration = 1000;
+  const stagger = filtered.length ? totalDuration / filtered.length : 0;
+
   filtered.forEach((place, index) => {
     const marker = L.marker([place.lat, place.lon], {
       icon: L.divIcon({ className: 'marker-emoji', html: `<span class="beer-emoji marker-pop-in">${place.emoji}</span>`, iconSize: [32, 32] }),
@@ -123,7 +126,7 @@ function renderMarkers() {
       const el = marker.getElement();
       const inner = el && el.querySelector('.marker-pop-in');
       if (inner) requestAnimationFrame(() => inner.classList.add('marker-pop-in-visible'));
-    }, index * 40);
+    }, index * stagger);
     popInTimers.push(timer);
   });
 
