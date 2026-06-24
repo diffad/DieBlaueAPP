@@ -224,3 +224,16 @@ main#map {
   color: #b8c2d6;
   margin-top: 4px;
 }
+
+.google-maps-link {
+  display: inline-block;
+  margin-top: 12px;
+  color: var(--accent-blue);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.google-maps-link:hover {
+  text-decoration: underline;
+}

@@ -95,12 +95,15 @@ function showDetails(place) {
   const status = currentOpenStatus(place.openingHoursRaw, new Date());
   const info = statusInfo(status, place.openingHoursRaw);
 
+  const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${place.name} ${place.lat},${place.lon}`)}`;
+
   $sheetContent.innerHTML = `
     <div class="detail-title"><span class="beer-emoji">${place.emoji}</span><span>${escapeHtml(place.name)}</span></div>
     <div class="detail-category">${place.label}</div>
     ${place.address ? `<div class="detail-row">📍 ${escapeHtml(place.address)}</div>` : ''}
     <div class="detail-row ${info.cls}">${info.icon} ${info.label}</div>
     ${place.openingHoursRaw ? `<div class="opening-hours-raw">${escapeHtml(place.openingHoursRaw)}</div>` : ''}
+    <a class="google-maps-link" href="${googleMapsUrl}" target="_blank" rel="noopener">⭐ Bewertungen &amp; Öffnungszeiten auf Google Maps ansehen →</a>
   `;
   $sheet.classList.remove('hidden');
   $sheetBackdrop.classList.remove('hidden');
