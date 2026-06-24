@@ -122,8 +122,19 @@ main#map {
   line-height: 1;
 }
 
-.beer-emoji,
 .marker-emoji:not(.user-marker) {
+  background: #ffffff;
+  border: 2px solid var(--beer-gold);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.5);
+}
+
+.beer-emoji {
   filter: hue-rotate(170deg) saturate(2.2) brightness(1.05);
 }
 

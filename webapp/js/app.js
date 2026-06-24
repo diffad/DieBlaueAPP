@@ -73,7 +73,7 @@ function renderMarkers() {
 
   filtered.forEach((place) => {
     const marker = L.marker([place.lat, place.lon], {
-      icon: L.divIcon({ className: 'marker-emoji', html: place.emoji, iconSize: [30, 30] }),
+      icon: L.divIcon({ className: 'marker-emoji', html: `<span class="beer-emoji">${place.emoji}</span>`, iconSize: [32, 32] }),
     });
     marker.on('click', () => showDetails(place));
     marker.addTo(map);
