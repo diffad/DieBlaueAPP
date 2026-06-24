@@ -3,6 +3,7 @@ const FALLBACK_CENTER = [52.5200, 13.4050]; // Berlin
 let map;
 let userMarker;
 let placeMarkers = [];
+let popInTimers = [];
 let placesById = new Map();
 let selectedCategories = new Set(['biergarten', 'kneipe', 'restaurant', 'tankstelle', 'sonstiges']);
 let onlyOpenNow = false;
@@ -101,6 +102,8 @@ function locateUser() {
 function renderMarkers() {
   placeMarkers.forEach((m) => map.removeLayer(m));
   placeMarkers = [];
+  popInTimers.forEach((t) => clearTimeout(t));
+  popInTimers = [];
 
   const filtered = Array.from(placesById.values()).filter((place) => {
     if (!selectedCategories.has(place.category)) return false;
@@ -110,13 +113,19 @@ function renderMarkers() {
     return true;
   });
 
-  filtered.forEach((place) => {
+  filtered.forEach((place, index) => {
     const marker = L.marker([place.lat, place.lon], {
-      icon: L.divIcon({ className: 'marker-emoji', html: `<span class="beer-emoji">${place.emoji}</span>`, iconSize: [32, 32] }),
+      icon: L.divIcon({ className: 'marker-emoji marker-pop-in', html: `<span class="beer-emoji">${place.emoji}</span>`, iconSize: [32, 32] }),
     });
     marker.on('click', () => showDetails(place));
-    marker.addTo(map);
     placeMarkers.push(marker);
+
+    const timer = setTimeout(() => {
+      marker.addTo(map);
+      const el = marker.getElement();
+      if (el) requestAnimationFrame(() => el.classList.add('marker-pop-in-visible'));
+    }, index * 40);
+    popInTimers.push(timer);
   });
 
   updateNearestInfo(filtered);
