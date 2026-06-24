@@ -34,10 +34,10 @@ body {
 }
 
 .app-version {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: normal;
   color: var(--beer-gold);
-  vertical-align: middle;
+  display: block;
 }
 
 .app-header .logo {
@@ -51,9 +51,15 @@ body {
   font-size: 18px;
   margin: 0;
   flex: 1;
+  min-width: 0;
+  line-height: 1.2;
+}
+
+.app-header h1 .title-text {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: block;
 }
 
 .header-actions button {
