@@ -201,13 +201,34 @@ function setupFilters() {
   });
 }
 
+async function reloadIfNewVersionAvailable() {
+  try {
+    const response = await fetch('index.html', { cache: 'no-store' });
+    const html = await response.text();
+    const match = /APP_VERSION\s*=\s*'([^']+)'/.exec(html);
+    if (match && match[1] !== APP_VERSION) {
+      window.location.reload();
+      return true;
+    }
+  } catch (e) {
+    // Versions-Check ist best-effort; bei Fehlern einfach normal weiterladen.
+  }
+  return false;
+}
+
+async function handleRefresh() {
+  const reloading = await reloadIfNewVersionAvailable();
+  if (reloading) return;
+  await loadPlacesForCurrentView();
+}
+
 function setupHeaderActions() {
   $toggleOpenNow.addEventListener('click', () => {
     onlyOpenNow = !onlyOpenNow;
     $toggleOpenNow.classList.toggle('active', onlyOpenNow);
     renderMarkers();
   });
-  document.getElementById('refreshBtn').addEventListener('click', loadPlacesForCurrentView);
+  document.getElementById('refreshBtn').addEventListener('click', handleRefresh);
   $sheetBackdrop.addEventListener('click', hideDetails);
 }
 
