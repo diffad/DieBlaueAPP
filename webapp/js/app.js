@@ -253,6 +253,7 @@ async function main() {
   setLoading(true);
   await locateUser();
   await loadPlacesForCurrentView();
+  reloadIfNewVersionAvailable();
 }
 
 main();
