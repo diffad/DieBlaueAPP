@@ -17,10 +17,10 @@ function categoryFromTags(tags) {
 }
 
 const CATEGORY_EMOJI = {
-  biergarten: '🍺🌳',
+  biergarten: '🌳',
   kneipe: '🍻',
-  restaurant: '🍺🍽',
-  tankstelle: '🍺⛽',
+  restaurant: '🍽',
+  tankstelle: '⛽',
   sonstiges: '🍺',
 };
 

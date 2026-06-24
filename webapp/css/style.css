@@ -149,7 +149,6 @@ main#map {
   opacity: 1;
 }
 
-.beer-emoji,
 .user-marker {
   text-shadow:
     -1px -1px 0 #000,
@@ -162,8 +161,17 @@ main#map {
     1px 0 0 #000;
 }
 
-.beer-emoji {
-  filter: hue-rotate(170deg) saturate(2.2) brightness(1.05);
+.beer-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--beer-gold);
+  border: 1.5px solid #000;
+  font-size: 14px;
+  line-height: 1;
 }
 
 .loading-overlay {

@@ -116,7 +116,7 @@ function renderMarkers() {
 
   filtered.forEach((place, index) => {
     const marker = L.marker([place.lat, place.lon], {
-      icon: L.divIcon({ className: 'marker-emoji', html: `<span class="beer-emoji marker-pop-in">${place.emoji}</span>`, iconSize: [32, 32] }),
+      icon: L.divIcon({ className: 'marker-emoji', html: `<span class="beer-badge marker-pop-in">${place.emoji}</span>`, iconSize: [32, 32] }),
     });
     marker.on('click', () => showDetails(place));
     placeMarkers.push(marker);
@@ -150,7 +150,7 @@ function showDetails(place) {
   const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${place.name} ${place.lat},${place.lon}`)}`;
 
   $sheetContent.innerHTML = `
-    <div class="detail-title"><span class="beer-emoji">${place.emoji}</span><span>${escapeHtml(place.name)}</span></div>
+    <div class="detail-title"><span class="beer-badge">${place.emoji}</span><span>${escapeHtml(place.name)}</span></div>
     <div class="detail-category">${place.label}</div>
     ${place.address ? `<div class="detail-row">📍 ${escapeHtml(place.address)}</div>` : ''}
     <div class="detail-row ${info.cls}">${info.icon} ${info.label}</div>
