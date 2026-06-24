@@ -11,7 +11,7 @@ kein SDK nötig. Läuft direkt im Browser und ist als PWA installierbar
   `opening_hours`.
 - **Design:** Dunkles Blau (`css/style.css`, Variable `--dark-blue`).
 - **Marker:** Bier-Emoji je Kategorie (`js/overpassService.js` → `CATEGORY_EMOJI`).
-- **PWA:** `manifest.json` (kein Service Worker mehr – vermeidet Caching-Probleme; Version sichtbar im Header über `js/version.js`).
+- **PWA:** `manifest.json` (kein Service Worker mehr – vermeidet Caching-Probleme; Version sichtbar im Header, Versionsnummer + Cache-Busting-Query in `index.html`).
 
 ## Lokal testen
 
