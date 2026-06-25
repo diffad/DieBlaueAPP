@@ -8,7 +8,7 @@
   <link rel="manifest" href="manifest.json" />
   <link rel="apple-touch-icon" href="icons/logo.jpg" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <link rel="stylesheet" href="css/style.css?v=2026.06.20-22" />
+  <link rel="stylesheet" href="css/style.css?v=2026.06.20-23" />
 </head>
 <body>
   <header class="app-header">
@@ -23,11 +23,11 @@
   <div id="nearestInfo" class="nearest-info hidden"></div>
 
   <nav class="category-filters" id="categoryFilters">
-    <button class="chip active" data-category="biergarten"><span class="beer-badge">🌳</span> Biergarten</button>
-    <button class="chip active" data-category="kneipe"><span class="beer-badge">🍻</span> Kneipe/Bar</button>
-    <button class="chip active" data-category="restaurant"><span class="beer-badge">🍽</span> Restaurant</button>
-    <button class="chip active" data-category="tankstelle"><span class="beer-badge">⛽</span> Tankstelle</button>
-    <button class="chip active" data-category="sonstiges"><span class="beer-badge">🍺</span> Sonstiges</button>
+    <button class="chip active" data-category="biergarten"><span class="place-icon"><span class="beer-badge">🌳</span><span class="beer-accent pos-br">🍺</span></span><br>Biergarten</button>
+    <button class="chip active" data-category="kneipe"><span class="place-icon"><span class="beer-badge">🍻</span></span><br>Kneipe/Bar</button>
+    <button class="chip active" data-category="restaurant"><span class="place-icon"><span class="beer-badge">🍽</span><span class="beer-accent pos-tl">🍺</span></span><br>Restaurant</button>
+    <button class="chip active" data-category="tankstelle"><span class="place-icon"><span class="beer-badge">⛽</span><span class="beer-accent pos-top">🥫</span></span><br>Tankst.</button>
+    <button class="chip active" data-category="sonstiges"><span class="place-icon"><span class="beer-badge">🍺</span></span><br>Sonstiges</button>
   </nav>
 
   <div id="errorBanner" class="error-banner hidden"></div>
@@ -45,9 +45,9 @@
   <div id="sheetBackdrop" class="sheet-backdrop hidden"></div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script>const APP_VERSION = '2026.06.20-22';</script>
-  <script src="js/openingHours.js?v=2026.06.20-22"></script>
-  <script src="js/overpassService.js?v=2026.06.20-22"></script>
-  <script src="js/app.js?v=2026.06.20-22"></script>
+  <script>const APP_VERSION = '2026.06.20-23';</script>
+  <script src="js/openingHours.js?v=2026.06.20-23"></script>
+  <script src="js/overpassService.js?v=2026.06.20-23"></script>
+  <script src="js/app.js?v=2026.06.20-23"></script>
 </body>
 </html>

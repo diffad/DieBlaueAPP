@@ -97,6 +97,13 @@ function locateUser() {
   });
 }
 
+function placeIconHtml(place) {
+  const accent = place.accent
+    ? `<span class="beer-accent ${place.accent.pos}">${place.accent.icon}</span>`
+    : '';
+  return `<span class="beer-badge">${place.emoji}</span>${accent}`;
+}
+
 function renderMarkers() {
   placeMarkers.forEach((m) => map.removeLayer(m));
   placeMarkers = [];
@@ -116,7 +123,7 @@ function renderMarkers() {
 
   filtered.forEach((place, index) => {
     const marker = L.marker([place.lat, place.lon], {
-      icon: L.divIcon({ className: 'marker-emoji', html: `<span class="beer-badge marker-pop-in">${place.emoji}</span>`, iconSize: [36, 36] }),
+      icon: L.divIcon({ className: 'marker-emoji', html: `<span class="place-icon marker-pop-in">${placeIconHtml(place)}</span>`, iconSize: [36, 36] }),
     });
     marker.on('click', () => showDetails(place));
     placeMarkers.push(marker);
@@ -150,7 +157,7 @@ function showDetails(place) {
   const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${place.name} ${place.lat},${place.lon}`)}`;
 
   $sheetContent.innerHTML = `
-    <div class="detail-title"><span class="beer-badge">${place.emoji}</span><span>${escapeHtml(place.name)}</span></div>
+    <div class="detail-title"><span class="place-icon">${placeIconHtml(place)}</span><span>${escapeHtml(place.name)}</span></div>
     <div class="detail-category">${place.label}</div>
     ${place.address ? `<div class="detail-row">📍 ${escapeHtml(place.address)}</div>` : ''}
     <div class="detail-row ${info.cls}">${info.icon} ${info.label}</div>

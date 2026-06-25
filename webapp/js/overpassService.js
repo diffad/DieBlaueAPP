@@ -24,6 +24,12 @@ const CATEGORY_EMOJI = {
   sonstiges: '🍺',
 };
 
+const CATEGORY_ACCENT = {
+  biergarten: { icon: '🍺', pos: 'pos-br' },
+  restaurant: { icon: '🍺', pos: 'pos-tl' },
+  tankstelle: { icon: '🥫', pos: 'pos-top' },
+};
+
 const CATEGORY_LABEL = {
   biergarten: 'Biergarten',
   kneipe: 'Kneipe / Bar',
@@ -55,6 +61,7 @@ function elementToPlace(element) {
     name: tags.name || 'Unbenannt',
     category,
     emoji: CATEGORY_EMOJI[category],
+    accent: CATEGORY_ACCENT[category] || null,
     label: CATEGORY_LABEL[category],
     lat,
     lon,

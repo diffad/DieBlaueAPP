@@ -92,22 +92,24 @@ body {
 
 .category-filters {
   display: flex;
-  gap: 6px;
-  padding: 8px 10px;
-  overflow-x: auto;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding: 6px 8px;
   background: var(--dark-blue);
   border-bottom: 1px solid var(--medium-blue);
 }
 
 .chip {
-  flex: none;
+  flex: 1 1 0;
   background: var(--medium-blue);
   color: var(--text-light);
   border: none;
-  border-radius: 20px;
-  padding: 8px 14px;
-  font-size: 13px;
+  border-radius: 14px;
+  padding: 5px 4px;
+  font-size: 10px;
   white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
   cursor: pointer;
 }
 
@@ -165,9 +167,13 @@ main#map {
     1px 0 0 #000;
 }
 
+.place-icon {
+  font-size: 26px;
+}
+
 .beer-badge {
   display: inline-block;
-  font-size: 26px;
+  font-size: 1em;
   line-height: 1;
   text-shadow:
     -1.5px -1.5px 0 #000,
@@ -178,6 +184,48 @@ main#map {
     0 1.5px 0 #000,
     -1.5px 0 0 #000,
     1.5px 0 0 #000;
+}
+
+.place-icon {
+  position: relative;
+  display: inline-block;
+}
+
+.beer-accent {
+  position: absolute;
+  font-size: 13px;
+  line-height: 1;
+  text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000,
+    0 -1px 0 #000,
+    0 1px 0 #000,
+    -1px 0 0 #000,
+    1px 0 0 #000;
+}
+
+.beer-accent.pos-br {
+  right: -5px;
+  bottom: -4px;
+  transform: rotate(15deg);
+}
+
+.beer-accent.pos-tl {
+  left: -6px;
+  top: -4px;
+}
+
+.beer-accent.pos-top {
+  left: 50%;
+  top: -9px;
+  transform: translateX(-50%);
+  font-size: 11px;
+}
+
+.chip .place-icon {
+  font-size: 18px;
 }
 
 .loading-overlay {
